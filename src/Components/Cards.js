@@ -9,10 +9,11 @@ export default class Cards extends Component {
       activePage: 15,
       nextCounter:10
     };
-    this.handlePageChange = this.handlePageChange.bind(this);
+this.Previous=this.Previous.bind(this)
+this.Next=this.Next.bind(this)
   }
   createPages(number) {
-    this.setState({ ele: [] ,items:[]});
+    this.setState({ ele: [] ,items:[],nextCounter:10});
     for (let i = 1; i < number; i++) {
       this.setState(prev => ({
         ele: [...prev.ele, <a key={i} id={i} onClick={e=>console.log(e.target.id)}>{i}</a>]
@@ -20,30 +21,36 @@ export default class Cards extends Component {
     }
 
   }
-  displayPages(){
-    for(let j=0;j<10;j++){
-        console.log(this.state.ele[j])
-        this.setState(prev=>({
-            items:[...prev.items,this.state.ele[j]]
-        }))
-    }
-  }
-  createNewPages = index => {};
-  handlePageChange(pageNumber) {
-    console.log(`active page is ${pageNumber}`);
-    this.setState({ activePage: pageNumber });
+  createList(data){
+      data.map(ele=>{
+          console.log(ele)
+      })
   }
 
+Previous(){
+    console.log("Clicked")
+    this.state.nextCounter==10?   alert("No More Pages") :  this.setState({nextCounter:this.state.nextCounter-10})
+
+}
+Next(){
+    this.state.nextCounter>this.state.ele.length? alert("No More Pages"):this.setState({nextCounter:this.state.nextCounter+10})
+}
   render() {
       if(!this.props.pages){
           return ("Type Bitch")
       }
     return (
-      <div class="pagination">
-        <a onClick={e=>this.setState({nextCounter:this.state.nextCounter-10})}>&laquo;</a>
-        {this.state.ele.slice(this.state.nextCounter-10,this.state.nextCounter)}
-        <a onClick={e=>this.setState({nextCounter:this.state.nextCounter+10})}>&raquo;</a>
-      </div>
+<div>
+<ul>
+
+</ul>
+  <div className="pagination">
+    <a onClick={e=>this.Previous()}>&laquo;</a>
+    {this.state.ele.slice(this.state.nextCounter-10,this.state.nextCounter)}
+    <a onClick={e=>this.Next()}>&raquo;</a>
+  </div>
+</div>
+
     );
   }
   componentDidMount() {
@@ -52,6 +59,7 @@ export default class Cards extends Component {
 
   }
   componentWillReceiveProps(props) {
+    this.createList(props.data)
 
     //  console.log(this.state.ele.length=10)
     this.createPages(props.pages);
