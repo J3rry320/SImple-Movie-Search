@@ -22,9 +22,22 @@ this.Next=this.Next.bind(this)
 
   }
   createList(data){
-      data.map(ele=>{
-          console.log(ele)
-      })
+    this.setState({items:[]})
+
+        data.map((ele,ind)=>{
+            this.setState(prev=>({
+                items:[...prev.items,<li key={ele.id} className="list-style col-12">
+                    <img className={"col-3"} src={"http://image.tmdb.org/t/p/w185_and_h278_bestv2//"+ele.poster_path}/>
+
+                <h3 className="text-justify padding-top">{ele.title}</h3>
+                <h4>{ele.release_date}</h4>
+                <button data-id={ind} onClick={e=>console.log(data[e.currentTarget.dataset.id])} className="btn-info">Learn More</button>
+
+                </li>]
+            }))
+            })
+
+
   }
 
 Previous(){
@@ -41,8 +54,8 @@ Next(){
       }
     return (
 <div>
-<ul>
-
+<ul className="row">
+{this.state.items}
 </ul>
   <div className="pagination">
     <a onClick={e=>this.Previous()}>&laquo;</a>
@@ -62,6 +75,7 @@ Next(){
 
   }
   componentWillReceiveProps(props) {
+
      // console.log(props.data)
    //this.createList(props.data)
 if(props.pages===this.props.pages){
@@ -71,6 +85,11 @@ else{
     this.createPages(props.pages);
 
 }
+if(props.data!=null){
+    this.createList(props.data)
+}
+
+
     //  console.log(this.state.ele.length=10)
 
 

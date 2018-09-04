@@ -20,6 +20,8 @@ class App extends Component {
   callWithPages(page){
     axios.get(`https://api.themoviedb.org/3/search/movie?api_key=b1ceec131e81ece0cacf2f641d01910a&query=${this.state.term}&page=${page}`)
     .then(res => {
+      document.body.scrollTop = 0; // For Safari
+      document.documentElement.scrollTop = 0;
  console.log(res.data)
       this.setState({
         data: res.data.results
