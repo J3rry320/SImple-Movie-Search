@@ -16,7 +16,7 @@ this.Next=this.Next.bind(this)
     this.setState({ ele: [] ,items:[],nextCounter:10});
     for (let i = 1; i < number; i++) {
       this.setState(prev => ({
-        ele: [...prev.ele, <a key={i} id={i} onClick={e=>console.log(e.target.id)}>{i}</a>]
+        ele: [...prev.ele, <a key={i} id={i} onClick={e=>this.props.callBack(this.props.term,e.target.id)}>{i}</a>]
       }));
     }
 
@@ -59,7 +59,8 @@ Next(){
 
   }
   componentWillReceiveProps(props) {
-    this.createList(props.data)
+     // console.log(props.data)
+   //this.createList(props.data)
 
     //  console.log(this.state.ele.length=10)
     this.createPages(props.pages);

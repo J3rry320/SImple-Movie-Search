@@ -20,7 +20,7 @@ export default class Navbar extends Component{
 
                 <input onChange={e=>this.setState({term:e.target.value})} placeholder="Enter The Name of the movie" type="text" className="input-in-nav" />
 
-          <button onClick={e=>this.props.callback(this.state.term)} className="btn btn-info">Search</button>
+          <button onClick={e=>this.props.callback(this.state.term,1)} className="btn btn-info">Search</button>
 
                 </div>
 

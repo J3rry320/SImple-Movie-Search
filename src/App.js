@@ -10,14 +10,18 @@ class App extends Component {
     super(props);
     this.state = {
       data: null,
-      pages: null
+      pages: null,
+      term:null,
+
     }
     this.callback=this.callback.bind(this)
   }
-  callback(term) {
+  callback(term,page) {
 
-    axios.get(`https://api.themoviedb.org/3/search/movie?api_key=b1ceec131e81ece0cacf2f641d01910a&query=${term}`)
+this.setState({term:term})
+    axios.get(`https://api.themoviedb.org/3/search/movie?api_key=b1ceec131e81ece0cacf2f641d01910a&query=${term}&page=${page}`)
       .then(res => {
+   console.log(res.data)
         this.setState({
           data: res.data.results
         })
@@ -37,7 +41,7 @@ class App extends Component {
         this.callback
       }
       / >
-<Card data={this.state.data} pages={this.state.pages}/>
+<Card data={this.state.data} term={this.state.term} callBack={this.callback} pages={this.state.pages}/>
       </div>
 
     )
