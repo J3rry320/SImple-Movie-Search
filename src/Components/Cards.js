@@ -7,7 +7,8 @@ export default class Cards extends Component {
       items: [],
       ele: [],
      data:null,
-      nextCounter:10
+      nextCounter:10,
+      title:""
     };
 this.Previous=this.Previous.bind(this)
 this.Next=this.Next.bind(this)
@@ -25,14 +26,15 @@ this.Next=this.Next.bind(this)
     this.setState({items:[],data:null})
 //Add Content To The List Emtied it in the upper line
         data.map((ele,ind)=>{
+       this.setState({title:data[0].title,data:data[0].id})
             this.setState(prev=>({
                 items:[...prev.items,<li key={ele.id} className="list-style wrapper">
                     <img className={"image"} src={"http://image.tmdb.org/t/p/w185_and_h278_bestv2//"+ele.poster_path}/>
-<div className="list-content">
-<h3 className="text-justify padding-top">{ele.title}</h3>
-                <h4>{ele.release_date}</h4>
-                <button data-id={ind} onClick={e=>this.setState ({data:data[e.currentTarget.dataset.id]})  } className="btn-info">Learn More</button>
-</div>
+         <div className="list-content">
+           <h3 className="text-justify padding-top">{ele.title}</h3>
+                <h4>{ele.release_date.substring(0,4)}</h4>
+                <button data-id={ind} onClick={e=>this.setState ({title:data[e.currentTarget.dataset.id].title,data:data[e.currentTarget.dataset.id].id})  } className="btn-info">Learn More</button>
+         </div>
 
 
                 </li>]
@@ -43,7 +45,7 @@ this.Next=this.Next.bind(this)
   }
 
 Previous(){
-    console.log("Clicked")
+
     this.state.nextCounter==10?   alert("No More Pages") :  this.setState({nextCounter:this.state.nextCounter-10})
 
 }
@@ -58,11 +60,11 @@ Next(){
     return (
 <div className="wrapper">
 <ul className="list">
- {this.state.data===null?"Click On Your Favorite Movies":"Currently Viewing "+this.state.data.title }
+ {this.state.data===null?"Click On Your Favorite Movies":"Currently Viewing "+this.state.title }
 {this.state.items}
 </ul>
 <div className="content">
-<Details data={this.state.data}/>
+<Details  data={this.state.data}/>
 </div>
   <div className="pagination">
 

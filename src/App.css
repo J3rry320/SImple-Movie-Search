@@ -1,7 +1,12 @@
+@import url('https://fonts.googleapis.com/css?family=Cookie|Rock+Salt|Nanum+Gothic+Coding');
 .wrapper{
   display: grid;
   grid-template-columns: repeat(12,1fr);
 
+}
+.left-span {
+  display: inline-block;
+  vertical-align: middle;
 }
 .list{
   grid-column: span 5;
@@ -12,6 +17,39 @@
 .image{
   grid-column: span 6;
 
+}
+.bg-div{
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+}
+.movie-header{
+font-size:32px;
+letter-spacing: 3px;
+font-weight:bold;
+text-transform: uppercase;
+font-family: 'Rock Salt', cursive;
+
+}
+.container{
+
+}
+.lead{
+  font-size:24px;
+  text-transform: capitalize;
+  text-align:justify;
+  line-height: 35px;
+  padding:0 15px 0 15px;
+
+/*  font-family: 'Cookie', cursive;*/
+
+  font-family: 'Nanum Gothic Coding', monospace;
+
+}
+.details{
+  color:#fff;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 0 25px 0 20px ;
 }
 
 .list-content{
@@ -24,7 +62,7 @@
 }
 .list-style{
   list-style-type: none;
-  padding: 25px 0 20px 0;
+
 
   border-bottom: 1px solid #333;
   border-right:1px solid #333;
