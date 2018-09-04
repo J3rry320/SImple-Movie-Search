@@ -22,8 +22,8 @@ this.Next=this.Next.bind(this)
 
   }
   createList(data){
-    this.setState({items:[]})
-
+    this.setState({items:[],data:null})
+//Add Content To The List Emtied it in the upper line
         data.map((ele,ind)=>{
             this.setState(prev=>({
                 items:[...prev.items,<li key={ele.id} className="list-style wrapper">
