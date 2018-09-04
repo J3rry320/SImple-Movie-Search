@@ -16,7 +16,7 @@ this.Next=this.Next.bind(this)
     this.setState({ ele: [] ,items:[],nextCounter:10});
     for (let i = 1; i < number; i++) {
       this.setState(prev => ({
-        ele: [...prev.ele, <a key={i} id={i} onClick={e=>this.props.callBack(this.props.term,e.target.id)}>{i}</a>]
+        ele: [...prev.ele, <a key={i} id={i} onClick={e=>this.props.callBack(e.target.id)}>{i}</a>]
       }));
     }
 
@@ -54,16 +54,25 @@ Next(){
     );
   }
   componentDidMount() {
-    this.createPages(this.props.pages);
+   this.createPages(this.props.pages);
 
+
+  }
+  componentDidUpdate(){
 
   }
   componentWillReceiveProps(props) {
      // console.log(props.data)
    //this.createList(props.data)
-
-    //  console.log(this.state.ele.length=10)
+if(props.pages===this.props.pages){
+    console.log("same")
+}
+else{
     this.createPages(props.pages);
+
+}
+    //  console.log(this.state.ele.length=10)
+
 
   }
 }

@@ -15,11 +15,26 @@ class App extends Component {
 
     }
     this.callback=this.callback.bind(this)
+    this.callWithPages=this.callWithPages.bind(this)
   }
-  callback(term,page) {
+  callWithPages(page){
+    axios.get(`https://api.themoviedb.org/3/search/movie?api_key=b1ceec131e81ece0cacf2f641d01910a&query=${this.state.term}&page=${page}`)
+    .then(res => {
+ console.log(res.data)
+      this.setState({
+        data: res.data.results
+      })
+
+
+    }).catch(err => {
+      console.log(err)
+    })
+   }
+
+  callback(term) {
 
 this.setState({term:term})
-    axios.get(`https://api.themoviedb.org/3/search/movie?api_key=b1ceec131e81ece0cacf2f641d01910a&query=${term}&page=${page}`)
+    axios.get(`https://api.themoviedb.org/3/search/movie?api_key=b1ceec131e81ece0cacf2f641d01910a&query=${term}`)
       .then(res => {
    console.log(res.data)
         this.setState({
@@ -41,7 +56,7 @@ this.setState({term:term})
         this.callback
       }
       / >
-<Card data={this.state.data} term={this.state.term} callBack={this.callback} pages={this.state.pages}/>
+<Card data={this.state.data} term={this.state.term} callBack={this.callWithPages} pages={this.state.pages}/>
       </div>
 
     )
