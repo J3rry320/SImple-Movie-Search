@@ -58,6 +58,9 @@ font-family: 'Rock Salt', cursive;
   font-family: 'Nanum Gothic Coding', monospace;
   font-size: 21px
 }
+.like-button{
+  cursor: pointer;
+}
 .danger{
   align-self: center;
   background:lightsalmon;

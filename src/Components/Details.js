@@ -4,15 +4,60 @@ import axios from 'axios';
 import Stars from './stars';
 import lang from './language.json';
 import Cast from './cast';
+let likeCounter=Math.round(Math.random()*1500);
+let dislikeCounter=Math.round(Math.random()*700);
 
 class Detail extends Component{
 constructor(data){
     super(data);
     this.state={
         itemToRender:null,
-        error:null
+        error:null,
+
+
     }
     this.getMovieData=this.getMovieData.bind(this)
+}
+likeIncrease(event){
+    let value=parseInt(event.target.nextSibling.textContent);
+
+
+
+    if(value>likeCounter){
+        event.target.nextSibling.textContent=value-1
+        event.target.className="far like-button fa-thumbs-up"
+    }
+    else{
+        if(event.target.parentElement.nextSibling.children[0].className.substring(0,3)==="fas"){
+            event.target.parentElement.nextSibling.children[0].className="far like-button fa-thumbs-up"
+            event.target.parentElement.nextSibling.children[1].textContent-=1;
+        }
+        event.target.nextSibling.textContent=value+1
+        event.target.className="fas like-button fa-thumbs-up"
+
+    }
+
+
+}
+likeDecrease(event){
+    let value=parseInt(event.target.nextSibling.textContent);
+
+if(value>dislikeCounter){
+    event.target.nextSibling.textContent=value-1;
+        event.target.className="far like-button fa-thumbs-down";
+}
+else{
+    event.target.nextSibling.textContent=value+1;
+
+    if(event.target.parentElement.previousSibling.children[0].className.substring(0,3)==="fas"){
+        event.target.parentElement.previousSibling.children[0].className="far like-button fa-thumbs-up"
+        event.target.parentElement.previousSibling.children[1].textContent-=1;
+    }
+
+    event.target.className="fas like-button fa-thumbs-down";
+
+}
+   console.log( )
 }
 getMovieData(id){
 
@@ -56,13 +101,13 @@ let show_tag=data.tagline?"d-block":"d-none"
 <h5 className={` movie-tag ${show_tag}`}>"{data.tagline}"</h5>
 <br/>
 <span className="text-desc left-span padding-left">
-<span className="left-span">
-<i className="far fa-thumbs-up"></i>
-211
+<span className="left-span  padding-left" >
+<i className="far like-button fa-thumbs-up" onClick={e=>{this.likeIncrease(e)}}></i>
+<strong>{likeCounter}</strong>
 </span>
-<span className="left-span">
-<i className="far fa-thumbs-down"></i>
-211
+<span className="left-span like-button ">
+<i onClick={e=>{this.likeDecrease(e)}} className="far fa-thumbs-down"></i>
+<strong>{dislikeCounter}</strong>
 </span>
 </span>
 
@@ -133,7 +178,7 @@ let show_tag=data.tagline?"d-block":"d-none"
 
 <br/>
 <span className="text-desc pt-2 left-span">
-<i class="padding-left fas fa-film"></i>
+<i className="padding-left fas fa-film"></i>
 {data.status}
 </span>
 
