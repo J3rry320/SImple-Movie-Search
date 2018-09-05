@@ -114,7 +114,7 @@ if(this.props.error){
    //this.createList(props.data)
 
 if(props.pages===this.props.pages){
-    console.log("same")
+   // console.log("same")
 }
 
 else{
