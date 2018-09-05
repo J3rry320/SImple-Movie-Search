@@ -4,7 +4,7 @@ import axios from "axios";
 import Stars from "./stars";
 import lang from "./language.json";
 import Cast from "./cast";
-import {uniqBy} from 'lodash'
+import {uniqBy,remove} from 'lodash'
 let likeCounter, dislikeCounter, classForDisLike, classForLike;
 let arrayOfItem = [];
 class Detail extends Component {
@@ -18,6 +18,7 @@ class Detail extends Component {
   }
   checkLocalStorage(data) {
     let items=JSON.parse(localStorage.getItem("Movies"));
+
     let elementToReturn=""
     items.forEach(element => {
 console.log(data.title,element.item.title)
@@ -34,6 +35,14 @@ console.log(data.title,element.item.title)
       event.target.nextSibling.textContent = value - 1;
       event.target.className = "far like-button fa-thumbs-up";
     } else {
+        this.setLocalStorage(
+            item,
+            parseInt(
+              event.target.nextSibling.textContent
+            )+1,
+            parseInt(event.target.parentElement.nextSibling.children[1].textContent),
+            true
+          );
       if (
         event.target.parentElement.nextSibling.children[0].className.substring(
           0,
@@ -45,13 +54,7 @@ console.log(data.title,element.item.title)
           "far like-button fa-thumbs-down";
         event.target.parentElement.nextSibling.children[1].textContent -= 1;
       }
-      this.setLocalStorage(
-        item,
-        parseInt(
-          event.target.parentElement.nextSibling.children[1].textContent
-        ),
-        (event.target.nextSibling.textContent = value + 1)
-      );
+
       event.target.nextSibling.textContent = value + 1;
       event.target.className = "fas like-button fa-thumbs-up";
     }
@@ -64,13 +67,7 @@ console.log(data.title,element.item.title)
       event.target.className = "far like-button fa-thumbs-down";
     } else {
       event.target.nextSibling.textContent = value + 1;
-      this.setLocalStorage(
-        item,
-        parseInt(
-          event.target.parentElement.previousSibling.children[1].textContent
-        ),
-        (event.target.nextSibling.textContent = value + 1)
-      );
+
       if (
         event.target.parentElement.previousSibling.children[0].className.substring(
           0,
@@ -86,13 +83,34 @@ console.log(data.title,element.item.title)
     }
   }
 
-  setLocalStorage(item, likeCount, dislikeCount) {
+  setLocalStorage(item, likeCount, dislikeCount,callingFromMethod) {
     if (localStorage) {
       arrayOfItem.push({ item: item, like: likeCount, dislike: dislikeCount });
+      let items=JSON.parse(localStorage.getItem("Movies"))
+if(callingFromMethod){
 
 
 
-      localStorage.setItem("Movies", JSON.stringify(uniqBy(arrayOfItem,"item.title")));
+arrayOfItem.map((ele,ind)=>{
+
+    if(ele.item.title===item.title && ele.like!=likeCount){
+       arrayOfItem.splice(ind,1)
+    }
+
+})
+localStorage.setItem("Movies",JSON.stringify(uniqBy(arrayOfItem,"item.title")))
+
+console.log(JSON.parse(localStorage.getItem("Movies")))
+
+}
+else{
+
+
+    localStorage.setItem("Movies", JSON.stringify(uniqBy(arrayOfItem,"item.title")));
+
+}
+
+
     } else {
       alert(
         "Update Your Broswer Nigga How Much Data Would You mind Shedding From Your ISP?"
