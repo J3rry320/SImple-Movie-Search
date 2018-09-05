@@ -6,7 +6,8 @@ import lang from './language.json';
 import Cast from './cast';
 let likeCounter=Math.round(Math.random()*1500);
 let dislikeCounter=Math.round(Math.random()*700);
-
+let classForLike="far like-button fa-thumbs-up";
+let classForDisLike="far like-button fa-thumbs-down"
 class Detail extends Component{
 constructor(data){
     super(data);
@@ -63,6 +64,9 @@ getMovieData(id){
 
     axios.get(`https://api.themoviedb.org/3/movie/${id}?&api_key=b1ceec131e81ece0cacf2f641d01910a&append_to_response=credits`).then(
         res=>{
+            likeCounter=Math.round(Math.random()*2000);
+            dislikeCounter=Math.round(Math.random()*1000);
+
 this.setState({error:null})
          let data=res.data;
          console.log(data);
@@ -102,11 +106,11 @@ let show_tag=data.tagline?"d-block":"d-none"
 <br/>
 <span className="text-desc left-span padding-left">
 <span className="left-span  padding-left" >
-<i className="far like-button fa-thumbs-up" onClick={e=>{this.likeIncrease(e)}}></i>
+<i className={classForLike} onClick={e=>{this.likeIncrease(e)}}></i>
 <strong>{likeCounter}</strong>
 </span>
 <span className="left-span like-button ">
-<i onClick={e=>{this.likeDecrease(e)}} className="far fa-thumbs-down"></i>
+<i onClick={e=>{this.likeDecrease(e)}} className={classForDisLike}></i>
 <strong>{dislikeCounter}</strong>
 </span>
 </span>
