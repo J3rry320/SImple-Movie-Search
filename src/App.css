@@ -6,9 +6,15 @@
   grid-template-columns: repeat(12,1fr);
 
 }
+.padding-left{
+  padding-right:10px;
+}
+.pt-2{
+  padding-top:10px;
+}
 .left-span {
   display: inline-block;
-  vertical-align: middle;
+
 }
 .list{
   grid-column: span 5;
@@ -24,34 +30,80 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
+  color: #fff
 }
 .movie-header{
-font-size:32px;
+font-size:28px;
 letter-spacing: 3px;
 font-weight:bold;
 text-transform: uppercase;
 font-family: 'Rock Salt', cursive;
 
 }
-.container{
+.left-col{
+  grid-column: span 6;
+  padding-right:5px;
+  border-right:3px #fff solid
+}
+.img-fluid-cast{
+  width:auto;
+  height: 200px;
+}
+.img-fluid-poster{
+  width:auto;
+  height: 187px;
+}
+.fantasy{
+  text-align:center;
+  font-family: 'Nanum Gothic Coding', monospace;
+  font-size: 21px
+}
+.danger{
+  align-self: center;
+  background:lightsalmon;
+  color:#000;
+  padding:5%;
+  text-align:center;
+  text-transform: uppercase;
+  font-weight: bolder;
+
 
 }
+.right-col{
+  padding-left:20px;
+  grid-column: span 6;
+}
+.movie-tag{
+  font-family: 'Cookie',cursive;
+  font-size: 32px;
+}
+
 .lead{
   font-size:24px;
   text-transform: capitalize;
   text-align:justify;
   line-height: 35px;
-  padding:0 15px 0 15px;
+
 
 /*  font-family: 'Cookie', cursive;*/
 
   font-family: 'Nanum Gothic Coding', monospace;
 
 }
+.text-desc{
+  font-size:24px
+}
+.d-block{
+  display: block;
+
+}
+.d-none{
+  display: none;
+}
 .details{
   color:#fff;
   background-color: rgba(0, 0, 0, 0.6);
-  padding: 0 25px 0 20px ;
+  padding: 0 25px 0 25px ;
 }
 
 .list-content{
@@ -105,10 +157,15 @@ font-family: 'Rock Salt', cursive;
       width: 100%;
   }
 }
+.white-text{
+  color:#fff;
+  text-decoration: none;
+
+}
 nav {
   list-style-type: none;
   margin:"20px";
-  padding: 20px;
+  padding: 10px;
 
   overflow: hidden;
   background-color: #333;

@@ -2,12 +2,15 @@ import React,{Component} from 'react'
 import ReactDOM from 'react-dom';
 import axios from 'axios';
 import Stars from './stars';
-import lang from './language.json'
+import lang from './language.json';
+import Cast from './cast';
+
 class Detail extends Component{
 constructor(data){
     super(data);
     this.state={
-        itemToRender:null
+        itemToRender:null,
+        error:null
     }
     this.getMovieData=this.getMovieData.bind(this)
 }
@@ -15,7 +18,7 @@ getMovieData(id){
 
     axios.get(`https://api.themoviedb.org/3/movie/${id}?&api_key=b1ceec131e81ece0cacf2f641d01910a&append_to_response=credits`).then(
         res=>{
-
+this.setState({error:null})
          let data=res.data;
          console.log(data);
         let language_id=data.spoken_languages.map(element=>{
@@ -31,6 +34,8 @@ getMovieData(id){
 let show_tag=data.tagline?"d-block":"d-none"
          this.setState({itemToRender:
          <div className="bg-div" style={{backgroundImage:`url(http://image.tmdb.org/t/p/original/${data.backdrop_path})`}}>
+<div className="details">
+
 
 <span className="left-span">
 <span className="left-span">
@@ -48,25 +53,40 @@ let show_tag=data.tagline?"d-block":"d-none"
 
 
 
-<h5 className={`text-left ${show_tag}`}>"{data.tagline}"</h5>
-<Stars color={data.starColor}  total={data.avgRating}/>
+<h5 className={` movie-tag ${show_tag}`}>"{data.tagline}"</h5>
+<br/>
+<span className="text-desc left-span padding-left">
+<span className="left-span">
+<i className="far fa-thumbs-up"></i>
+211
+</span>
+<span className="left-span">
+<i className="far fa-thumbs-down"></i>
+211
+</span>
+</span>
+
+
+
+<br/>
+<Stars total={data.vote_average}/>
 <br className={show}/><br className={show}/>
-<a className={` alert-link ${show}`} href={data.homepage}>{data.homepage}</a>
-<p className="text-justify lead pt-2">{data.Description}</p>
+<a className={`white-text  ${show}`} href={data.homepage}>{data.homepage}</a>
+<p className= "lead">{data.overview}</p>
 
-
-<div className={`hello`}>
+<div className="wrapper">
+<div className={`left-col`}>
 
 <span className="text-desc left-span pt-2">
 
 
- <i className="fas fa-calendar-alt "></i>{data.date}
+ <i className="fas fa-calendar-alt padding-left"></i>{data.release_date}
 </span>
 <br/>
 <span className="text-desc left-span pt-2">
 
 
- <i className="far fa-clock "></i>{Math.round(data.runtime/60)}h{data.runtime%60}m
+ <i className="far fa-clock padding-left"></i>{Math.round(data.runtime/60)}h{data.runtime%60}m
 </span>
 
 
@@ -74,65 +94,113 @@ let show_tag=data.tagline?"d-block":"d-none"
 
 
 
-<span className="left-span text-desc pt-2 pl-2">
+<span className="left-span text-desc pt-2 padding-left">
 {country_id}
+</span>
+<br/>
+<span className="text-desc left-span pt-2">
+<i className="fas fa-language padding-left"></i>
+{language_id}
 </span>
 
 
 </div>
-<div className={`hello`}>
+<div className={`right-col`}>
 
 
-<span className="text-desc left-span ">
+<span className="text-desc left-span pt-2">
 
 
- <i className="fas fa-money-bill-alt "></i>
+ <i className="fas fa-money-bill-alt padding-left"></i>
 {budget}
 </span>
 <br/>
 <span className="text-desc left-span pt-2">
 
 
- <i className="far fa-money-bill-alt "></i>
+ <i className="far fa-money-bill-alt padding-left"></i>
 {revenue}
 </span>
 <br/>
-<span className="text-desc left-span ">
+<span className="text-desc left-span pt-2">
 
 
-<i className="far fa-smile "></i>
- {data.genre}
+<i className="far fa-smile padding-left"></i>
+ {data.genres.map(ele=>{
+     return ele.name+" "
+ })}
 </span>
 
 <br/>
-<span className="text-desc left-span">
-<i className="fas fa-language "></i>
-{language_id}
+<span className="text-desc pt-2 left-span">
+<i class="padding-left fas fa-film"></i>
+{data.status}
 </span>
 
 
 
 
-         </div></div>})
+      </div>
+      </div>
+      <center>
+          <h3>
+              The Cast
+          </h3>
+      <Cast data={data.credits}/>
+      </center>
+
+      </div>
+      </div>})
 
         }
-    )
+    ).catch(error=>{
+        this.setState({itemToRender:null})
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+
+
+        } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log(error.request);
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+        }
+
+        this.setState({error:error.response.status+" "+error.response.data.status_message});
+
+    })
 
 }
 render(){
-    document.body.scrollTop = 0; // For Safari
-    document.documentElement.scrollTop = 0;
-    return(
-        <div>
-{ this.state.itemToRender}
-        </div>
 
-    )
+    if(this.state.error){
+        this.props.callback(this.state.error)
+        return(
+<h2 className="danger">{this.state.error}</h2>
+        )
+
+    }
+    else{
+        return(
+            <div>
+    { this.state.itemToRender}
+            </div>
+
+        )
+    }
+
 }
 componentDidMount(){
     this.getMovieData(this.props.data)
 }
-componentWillReceivedata(props){
+
+componentWillReceiveProps(props){
+
+    console.log(props.data)
     this.getMovieData(props.data)
 }
 

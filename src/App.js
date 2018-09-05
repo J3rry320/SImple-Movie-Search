@@ -12,6 +12,7 @@ class App extends Component {
       data: null,
       pages: null,
       term:null,
+      error:null
 
     }
     this.callback=this.callback.bind(this)
@@ -29,8 +30,10 @@ class App extends Component {
       })
 
 
-    }).catch(err => {
-      console.log(err)
+    }).catch((error) => {
+
+
+    console.warn(error.config);
     })
    }
 
@@ -39,6 +42,7 @@ class App extends Component {
 this.setState({term:term})
     axios.get(`https://api.themoviedb.org/3/search/movie?api_key=b1ceec131e81ece0cacf2f641d01910a&query=${term}`)
       .then(res => {
+        this.setState({error:null})
    console.log(res.data)
         this.setState({
           data: res.data.results
@@ -47,11 +51,30 @@ this.setState({term:term})
           pages: res.data.total_pages
         })
 
-      }).catch(err => {
-        console.log(err)
+      }).catch(error => {
+console.log(error)
+if (error.response) {
+  // The request was made and the server responded with a status code
+  // that falls out of the range of 2xx
+this.setState({error:+error.response.status.toString()+" "+error.response.data.errors[0]+" "})
+
+} else if (error.request) {
+  // The request was made but no response was received
+  // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+  // http.ClientRequest in node.js
+  console.log(error.request);
+} else {
+  // Something happened in setting up the request that triggered an Error
+  console.log('Error', error.message);
+}
+
+
+  //this.setState({error:error.response.data.status_message+error.response.status})
+
       })
   }
   render() {
+
     return (
       <div>
 
@@ -59,7 +82,7 @@ this.setState({term:term})
         this.callback
       }
       / >
-<Card data={this.state.data} term={this.state.term} callBack={this.callWithPages} pages={this.state.pages}/>
+<Card data={this.state.data} error={this.state.error} term={this.state.term} callBack={this.callWithPages} pages={this.state.pages}/>
       </div>
 
     )

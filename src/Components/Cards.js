@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import Details from './Details'
+import Details from './Details';
+let className;
 export default class Cards extends Component {
   constructor(props) {
     super(props);
@@ -8,10 +9,13 @@ export default class Cards extends Component {
       ele: [],
      data:null,
       nextCounter:10,
-      title:""
+      title:"",
+
     };
-this.Previous=this.Previous.bind(this)
-this.Next=this.Next.bind(this)
+this.Previous=this.Previous.bind(this);
+this.checkError=this.checkError.bind(this);
+this.Next=this.Next.bind(this);
+this.updateDesc=this.updateDesc.bind(this)
   }
   createPages(number) {
     this.setState({ ele: [] ,items:[],nextCounter:10});
@@ -22,18 +26,25 @@ this.Next=this.Next.bind(this)
     }
 
   }
+  updateDesc(e,data){
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0;
+    this.setState ({title:data[e.currentTarget.dataset.id].title,data:data[e.currentTarget.dataset.id].id})
+  }
   createList(data){
     this.setState({items:[],data:null})
 //Add Content To The List Emtied it in the upper line
         data.map((ele,ind)=>{
-       this.setState({title:data[0].title,data:data[0].id})
+            let image=ele.poster_path?"http://image.tmdb.org/t/p/w185_and_h278_bestv2//"+ele.poster_path:"https://www.toadandco.com/c.1311986/sca-dev-elbrus/img/no_image_available.jpeg";
+       let height=image==="https://www.toadandco.com/c.1311986/sca-dev-elbrus/img/no_image_available.jpeg"?"img-fluid-poster":" "
+            this.setState({title:data[0].title,data:data[0].id})
             this.setState(prev=>({
                 items:[...prev.items,<li key={ele.id} className="list-style wrapper">
-                    <img className={"image"} src={"http://image.tmdb.org/t/p/w185_and_h278_bestv2//"+ele.poster_path}/>
+                    <img className={`image ${height}`} src={image}/>
          <div className="list-content">
            <h3 className="text-justify padding-top">{ele.title}</h3>
                 <h4>{ele.release_date.substring(0,4)}</h4>
-                <button data-id={ind} onClick={e=>this.setState ({title:data[e.currentTarget.dataset.id].title,data:data[e.currentTarget.dataset.id].id})  } className="btn-info">Learn More</button>
+                <button data-id={ind} onClick={e=>this.updateDesc(e,data)} className="btn-info">Learn More</button>
          </div>
 
 
@@ -52,19 +63,31 @@ Previous(){
 Next(){
     this.state.nextCounter>this.state.ele.length? alert("No More Pages"):this.setState({nextCounter:this.state.nextCounter+10})
 }
-  render() {
+checkError(data){
+if(data){
+   className="d-none"
+}
 
+}
+  render() {
+      className=""
+if(this.props.error){
+   return(<h2 className="danger">{this.props.error}</h2>)
+}
       if(!this.props.pages){
           return ("Type Bitch")
       }
     return (
 <div className="wrapper">
-<ul className="list">
- {this.state.data===null?"Click On Your Favorite Movies":"Currently Viewing "+this.state.title }
+<ul className={`list`}>
+<h3>
+{this.state.data===null?"Click On Your Favorite Movies":"Currently Viewing "+this.state.title }
+</h3>
+
 {this.state.items}
 </ul>
 <div className="content">
-<Details  data={this.state.data}/>
+<Details callback={this.checkError}  data={this.state.data}/>
 </div>
   <div className="pagination">
 
@@ -84,16 +107,16 @@ Next(){
 
 
   }
-  componentDidUpdate(){
 
-  }
   componentWillReceiveProps(props) {
 
      // console.log(props.data)
    //this.createList(props.data)
+
 if(props.pages===this.props.pages){
     console.log("same")
 }
+
 else{
     this.createPages(props.pages);
 
