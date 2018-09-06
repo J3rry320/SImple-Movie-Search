@@ -1,10 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom'
+
 const starCounter=(props)=>{
 
 
 let totalStars=props.total/2;
-let halfStars=(totalStars%1)
+//let halfStars=(totalStars%1)
 let element=[];
 let completeStars=Math.trunc(totalStars);
 for(let i=0;i<completeStars;i++){

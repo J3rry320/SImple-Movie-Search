@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+
 const Cast = props => {
   let ele = [];
   console.log(props.data)

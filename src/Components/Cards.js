@@ -22,7 +22,7 @@ export default class Cards extends Component {
   }
   pagesOnClick(e){
     this.props.callBack(e.target.id);
-    this.setState({activePage:parseInt(e.target.id)})
+    this.setState({activePage:parseInt(e.target.id,10)})
   }
   createPages(number) {
     this.setState({ ele: [], items: [], nextCounter: 10 });
@@ -74,7 +74,7 @@ export default class Cards extends Component {
         items: [
           ...prev.items,
           <li key={ele.id} className="list-style padding-list wrapper">
-            <img className={`image ${height}`} src={image} />
+            <img className={`image ${height}`} alt={ele.title} src={image} />
             <div className="list-content">
               <h3 className="text-justify padding-top">{ele.title}</h3>
               <h4>{ele.release_date.substring(0, 4)}</h4>
@@ -89,6 +89,7 @@ export default class Cards extends Component {
           </li>
         ]
       }));
+      return true;
     });
   }
 

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
+
 import axios from "axios";
 import Stars from "./stars";
 import lang from "./language.json";
 import Cast from "./cast";
-import { uniqBy, remove } from "lodash";
+import { uniqBy } from "lodash";
 import Suggestion from './Suggestion';
 
 let likeCounter, dislikeCounter, classForDisLike, classForLike;
@@ -32,7 +32,7 @@ class Detail extends Component {
     return elementToReturn;
   }
   likeIncrease(event, item) {
-    let value = parseInt(event.target.nextSibling.textContent);
+    let value = parseInt(event.target.nextSibling.textContent,10);
 
     if (value > likeCounter) {
       event.target.nextSibling.textContent = value - 1;
@@ -40,9 +40,9 @@ class Detail extends Component {
     } else {
       this.setLocalStorage(
         item,
-        parseInt(event.target.nextSibling.textContent) + 1,
+        parseInt(event.target.nextSibling.textContent,10) + 1,
         parseInt(
-          event.target.parentElement.nextSibling.children[1].textContent
+          event.target.parentElement.nextSibling.children[1].textContent,10
         ),
         true
       );
@@ -62,7 +62,7 @@ class Detail extends Component {
     }
   }
   likeDecrease(event, item) {
-    let value = parseInt(event.target.nextSibling.textContent);
+    let value = parseInt(event.target.nextSibling.textContent,10);
 
     if (value > dislikeCounter) {
       event.target.nextSibling.textContent = value - 1;
@@ -72,9 +72,9 @@ class Detail extends Component {
       this.setLocalStorage(
         item,
         parseInt(
-          event.target.parentElement.previousSibling.children[1].textContent
+          event.target.parentElement.previousSibling.children[1].textContent,10
         ),
-        parseInt(event.target.nextSibling.textContent),
+        parseInt(event.target.nextSibling.textContent,10),
 
         true
       );
@@ -100,11 +100,12 @@ class Detail extends Component {
       if (callingFromMethod === true) {
         arrayOfItem.map((ele, ind) => {
           if (
-            (ele.item.title === item.title && ele.like != likeCount) ||
-            (ele.item.title === item.title && ele.dislike != dislikeCount)
+            (ele.item.title === item.title && ele.like !== likeCount) ||
+            (ele.item.title === item.title && ele.dislike !== dislikeCount)
           ) {
             arrayOfItem.splice(ind, 1);
           }
+          return true ;
         });
         localStorage.setItem(
           "Movies",
@@ -137,8 +138,8 @@ class Detail extends Component {
         let data;
 
         if (
-          dataToCheck != null &&
-          dataToCheck != undefined &&
+          dataToCheck !== null &&
+          dataToCheck !== undefined &&
           dataToCheck.item.title === res.data.title
         ) {
 
@@ -153,6 +154,7 @@ class Detail extends Component {
       data.genres.map(ele=>{
 
           this.setState(prev=>({suggestion:[...prev.suggestion,ele.id]}))
+          return true;
       })
 
         let language_id = data.spoken_languages.map(element => {
@@ -202,7 +204,7 @@ class Detail extends Component {
                   </span>
 
                   <span className="left-span">
-                    <h4 className="text-left">
+                    <h4 className="text-desc padding-left">
                       ({data.release_date.substring(0, 4)})
                     </h4>
                   </span>
