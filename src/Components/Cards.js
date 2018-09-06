@@ -12,6 +12,7 @@ export default class Cards extends Component {
       title: "",
       activePage:null,
       listToRender:null,
+      classNameToPass:"d-block"
     };
     this.Previous = this.Previous.bind(this);
     this.checkError = this.checkError.bind(this);
@@ -25,6 +26,10 @@ export default class Cards extends Component {
   }
   createPages(number) {
     this.setState({ ele: [], items: [], nextCounter: 10 });
+    this.state.data===null?this.setState({classNameToPass:"d-none"}):   this.setState({classNameToPass:"d-block"})
+    number===1?this.setState({classNameToPass:"d-none"}):   this.setState({classNameToPass:"d-block"})
+
+
     for (let i = 1; i < number; i++) {
       this.setState(prev => ({
         ele: [
@@ -43,6 +48,7 @@ export default class Cards extends Component {
 
 
   }
+
   updateDesc(e, data) {
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0;
@@ -93,7 +99,7 @@ export default class Cards extends Component {
 
       ? alert("No More Pages")
       : this.setState({ nextCounter: this.state.nextCounter - 10 });
-      this.setState({activePage:this.state.activePage-1},() => {
+     /* Work in progress this.setState({activePage:this.state.activePage-1},() => {
       //  this.props.callBack( this.state.activePage); //Need Some Rethinking To Be Done
     })
       if(this.state.activePage%10===0){
@@ -103,7 +109,7 @@ export default class Cards extends Component {
         )})
        // this.props.callBack( this.state.activePage-=1);
 
-    }
+    }*/
   }
   Next() {
     this.state.nextCounter > this.state.ele.length
@@ -111,7 +117,7 @@ export default class Cards extends Component {
 
     ? alert("No More Pages")
     : this.setState({ nextCounter: this.state.nextCounter + 10 });
-      this.setState({activePage:this.state.activePage+1},() => {
+   /*   this.setState({activePage:this.state.activePage+1},() => {
         //this.props.callBack( this.state.activePage);
     })
 
@@ -130,6 +136,10 @@ export default class Cards extends Component {
       console.log(this.state.listToRender)
 
       console.log(this.state.activePage)
+
+      Work iN Progress
+      */
+
 
 
   }
@@ -167,12 +177,12 @@ export default class Cards extends Component {
         <div className="content">
           <Details callback={this.checkError} data={this.state.data} />
         </div>
-        <div className="pagination text-desc">
-          <a className="list-style" onClick={e => this.Previous()}>
+        <div className={`pagination text-desc`}>
+          <a className={`list-style ${this.state.classNameToPass}`} onClick={e => this.Previous()}>
             <i className="fas fa-arrow-left" />
           </a>
 {this.state.ele.slice(this.state.nextCounter-10,this.state.nextCounter)}
-          <a className="list-style" onClick={e => this.Next()}>
+          <a className={`list-style ${this.state.classNameToPass}`} onClick={e => this.Next()}>
             <i className="fas fa-arrow-right" />
           </a>
         </div>

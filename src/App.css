@@ -171,7 +171,7 @@ nav {
   grid-column: span 12
 }
 .heading-container{
-  margin-top:-3.5%;
+margin-top:-0.001%;
   padding:10%
 }
 .bg-black{
@@ -233,6 +233,9 @@ nav {
 
 .pagination a:visited {
   background-color: #666
+}
+.text-center{
+  text-align:center;
 }
 .pagination a:link {
   background-color: #666

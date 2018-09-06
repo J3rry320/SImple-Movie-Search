@@ -151,8 +151,8 @@ class Detail extends Component {
         }
         this.setLocalStorage(res.data, likeCounter, dislikeCounter, false);
       data.genres.map(ele=>{
-          console.log(ele.id)
-          this.setState(prev=>({suggestion:[...prev.suggestion,{id:ele.id}]}))
+
+          this.setState(prev=>({suggestion:[...prev.suggestion,ele.id]}))
       })
 
         let language_id = data.spoken_languages.map(element => {
