@@ -5,6 +5,8 @@ import Stars from "./stars";
 import lang from "./language.json";
 import Cast from "./cast";
 import { uniqBy, remove } from "lodash";
+import Suggestion from './Suggestion';
+
 let likeCounter, dislikeCounter, classForDisLike, classForLike;
 
 
@@ -149,7 +151,8 @@ class Detail extends Component {
         }
         this.setLocalStorage(res.data, likeCounter, dislikeCounter, false);
       data.genres.map(ele=>{
-          this.setState(prev=>({suggestion:[...prev.suggestion,ele.id]}))
+          console.log(ele.id)
+          this.setState(prev=>({suggestion:[...prev.suggestion,{id:ele.id}]}))
       })
 
         let language_id = data.spoken_languages.map(element => {
@@ -326,7 +329,9 @@ class Detail extends Component {
       this.props.callback(this.state.error);
       return <h2 className="danger">{this.state.error}</h2>;
     } else {
-      return <div>{this.state.itemToRender}</div>;
+      return <div>{this.state.itemToRender}
+      <Suggestion data={this.state.suggestion}/>
+      </div>;
     }
   }
   componentDidMount() {

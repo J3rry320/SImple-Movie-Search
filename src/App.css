@@ -234,7 +234,9 @@ nav {
 .pagination a:visited {
   background-color: #666
 }
-
+.pagination a:link {
+  background-color: #666
+}
 .btn-info {
   background-color: #4CAF50;
   /* Green */

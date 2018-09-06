@@ -9,12 +9,19 @@ export default class Cards extends Component {
       ele: [],
       data: null,
       nextCounter: 10,
-      title: ""
+      title: "",
+      activePage:null,
+      listToRender:null,
     };
     this.Previous = this.Previous.bind(this);
     this.checkError = this.checkError.bind(this);
     this.Next = this.Next.bind(this);
     this.updateDesc = this.updateDesc.bind(this);
+    this.pagesOnClick=this.pagesOnClick.bind(this)
+  }
+  pagesOnClick(e){
+    this.props.callBack(e.target.id);
+    this.setState({activePage:parseInt(e.target.id)})
   }
   createPages(number) {
     this.setState({ ele: [], items: [], nextCounter: 10 });
@@ -22,12 +29,19 @@ export default class Cards extends Component {
       this.setState(prev => ({
         ele: [
           ...prev.ele,
-          <a key={i} id={i} className="list-style" onClick={e => this.props.callBack(e.target.id)}>
+          <a key={i} id={i} className="list-style" onClick={e =>this.pagesOnClick(e) }>
             {i}
           </a>
         ]
-      }));
+      }),()=>{
+        this.setState({listToRender:this.state.ele.slice(
+            this.state.nextCounter - 10,
+            this.state.nextCounter
+          )})
+      });
     }
+
+
   }
   updateDesc(e, data) {
     document.body.scrollTop = 0; // For Safari
@@ -73,14 +87,51 @@ export default class Cards extends Component {
   }
 
   Previous() {
-    this.state.nextCounter == 10
+
+    this.state.nextCounter === 10
+
+
       ? alert("No More Pages")
       : this.setState({ nextCounter: this.state.nextCounter - 10 });
+      this.setState({activePage:this.state.activePage-1},() => {
+      //  this.props.callBack( this.state.activePage); //Need Some Rethinking To Be Done
+    })
+      if(this.state.activePage%10===0){
+        this.setState({listToRender:  this.state.ele.slice(
+          this.state.nextCounter - 10,
+          this.state.nextCounter
+        )})
+       // this.props.callBack( this.state.activePage-=1);
+
+    }
   }
   Next() {
     this.state.nextCounter > this.state.ele.length
-      ? alert("No More Pages")
-      : this.setState({ nextCounter: this.state.nextCounter + 10 });
+
+
+    ? alert("No More Pages")
+    : this.setState({ nextCounter: this.state.nextCounter + 10 });
+      this.setState({activePage:this.state.activePage+1},() => {
+        //this.props.callBack( this.state.activePage);
+    })
+
+      if(this.state.activePage%10===0 && this.state.activePage!=0){
+          this.state.listToRender=[];
+          this.setState({listToRender:this.state.ele.splice(this.state.nextCounter-10,this.state.nextCounter)});
+          console.log(this.state.listToRender)
+
+
+
+      }
+      else{
+          console.log("Even Pages")
+      }
+
+      console.log(this.state.listToRender)
+
+      console.log(this.state.activePage)
+
+
   }
   checkError(data) {
     if (data) {
@@ -88,6 +139,7 @@ export default class Cards extends Component {
     }
   }
   render() {
+
     className = "";
     if (this.props.error) {
       return <h2 className="danger">{this.props.error}</h2>;
@@ -119,10 +171,7 @@ export default class Cards extends Component {
           <a className="list-style" onClick={e => this.Previous()}>
             <i className="fas fa-arrow-left" />
           </a>
-          {this.state.ele.slice(
-            this.state.nextCounter - 10,
-            this.state.nextCounter
-          )}
+{this.state.ele.slice(this.state.nextCounter-10,this.state.nextCounter)}
           <a className="list-style" onClick={e => this.Next()}>
             <i className="fas fa-arrow-right" />
           </a>
