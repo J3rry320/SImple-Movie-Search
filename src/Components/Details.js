@@ -4,8 +4,9 @@ import axios from "axios";
 import Stars from "./stars";
 import lang from "./language.json";
 import Cast from "./cast";
-import {uniqBy,remove} from 'lodash'
+import { uniqBy, remove } from "lodash";
 let likeCounter, dislikeCounter, classForDisLike, classForLike;
+
 let arrayOfItem = [];
 class Detail extends Component {
   constructor(data) {
@@ -17,39 +18,36 @@ class Detail extends Component {
     this.getMovieData = this.getMovieData.bind(this);
   }
   checkLocalStorage(data) {
-    let items=JSON.parse(localStorage.getItem("Movies"));
+    let items = JSON.parse(localStorage.getItem("Movies"));
 
-    let elementToReturn=""
-    items.forEach(element => {
-console.log(data.title,element.item.title)
-       if(data.title===element.item.title){
-          elementToReturn= element
-       }
+    let elementToReturn;
+    elementToReturn = items.find(element => {
+      return data.title === element.item.title;
     });
-    return elementToReturn
+
+    return elementToReturn;
   }
-  likeIncrease(event,item) {
+  likeIncrease(event, item) {
     let value = parseInt(event.target.nextSibling.textContent);
 
     if (value > likeCounter) {
       event.target.nextSibling.textContent = value - 1;
       event.target.className = "far like-button fa-thumbs-up";
     } else {
-        this.setLocalStorage(
-            item,
-            parseInt(
-              event.target.nextSibling.textContent
-            )+1,
-            parseInt(event.target.parentElement.nextSibling.children[1].textContent),
-            true
-          );
+      this.setLocalStorage(
+        item,
+        parseInt(event.target.nextSibling.textContent) + 1,
+        parseInt(
+          event.target.parentElement.nextSibling.children[1].textContent
+        ),
+        true
+      );
       if (
         event.target.parentElement.nextSibling.children[0].className.substring(
           0,
           3
         ) === "fas"
       ) {
-
         event.target.parentElement.nextSibling.children[0].className =
           "far like-button fa-thumbs-down";
         event.target.parentElement.nextSibling.children[1].textContent -= 1;
@@ -67,7 +65,15 @@ console.log(data.title,element.item.title)
       event.target.className = "far like-button fa-thumbs-down";
     } else {
       event.target.nextSibling.textContent = value + 1;
+      this.setLocalStorage(
+        item,
+        parseInt(
+          event.target.parentElement.previousSibling.children[1].textContent
+        ),
+        parseInt(event.target.nextSibling.textContent),
 
+        true
+      );
       if (
         event.target.parentElement.previousSibling.children[0].className.substring(
           0,
@@ -83,34 +89,31 @@ console.log(data.title,element.item.title)
     }
   }
 
-  setLocalStorage(item, likeCount, dislikeCount,callingFromMethod) {
+  setLocalStorage(item, likeCount, dislikeCount, callingFromMethod) {
     if (localStorage) {
       arrayOfItem.push({ item: item, like: likeCount, dislike: dislikeCount });
-      let items=JSON.parse(localStorage.getItem("Movies"))
-if(callingFromMethod){
 
+      if (callingFromMethod === true) {
+        arrayOfItem.map((ele, ind) => {
+          if (
+            (ele.item.title === item.title && ele.like != likeCount) ||
+            (ele.item.title === item.title && ele.dislike != dislikeCount)
+          ) {
+            arrayOfItem.splice(ind, 1);
+          }
+        });
+        localStorage.setItem(
+          "Movies",
+          JSON.stringify(uniqBy(arrayOfItem, "item.title"))
+        );
 
-
-arrayOfItem.map((ele,ind)=>{
-
-    if(ele.item.title===item.title && ele.like!=likeCount){
-       arrayOfItem.splice(ind,1)
-    }
-
-})
-localStorage.setItem("Movies",JSON.stringify(uniqBy(arrayOfItem,"item.title")))
-
-console.log(JSON.parse(localStorage.getItem("Movies")))
-
-}
-else{
-
-
-    localStorage.setItem("Movies", JSON.stringify(uniqBy(arrayOfItem,"item.title")));
-
-}
-
-
+        console.log(JSON.parse(localStorage.getItem("Movies")));
+      } else {
+        localStorage.setItem(
+          "Movies",
+          JSON.stringify(uniqBy(arrayOfItem, "item.title"))
+        );
+      }
     } else {
       alert(
         "Update Your Broswer Nigga How Much Data Would You mind Shedding From Your ISP?"
@@ -118,33 +121,32 @@ else{
     }
   }
   getMovieData(id) {
+    likeCounter = Math.round(Math.random() * 1200);
+    dislikeCounter = Math.round(Math.random() * 300);
     axios
       .get(
         `https://api.themoviedb.org/3/movie/${id}?&api_key=b1ceec131e81ece0cacf2f641d01910a&append_to_response=credits`
       )
       .then(res => {
-        likeCounter = Math.round(Math.random() * 1200);
-        dislikeCounter = Math.round(Math.random() * 300);
-
-
-        this.setLocalStorage(res.data, likeCounter, dislikeCounter);
         this.setState({ error: null, itemToRender: null });
-let dataToCheck=this.checkLocalStorage(res.data)
-let data;
-let DataNotFound=res.data
-if(dataToCheck!=null || dataToCheck!=undefined&& dataToCheck.title===DataNotFound.title){
-    data=dataToCheck.item;
-    dislikeCounter=dataToCheck.dislike
-    likeCounter=dataToCheck.like;
-}
-else{
-    data=DataNotFound
-}
+        let dataToCheck = this.checkLocalStorage(res.data);
+        let data;
 
-
-
-console.log(data,dataToCheck.item)
-
+        if (
+          dataToCheck != null &&
+          dataToCheck != undefined &&
+          dataToCheck.item.title === res.data.title
+        ) {
+          console.log("Doin THis");
+          data = dataToCheck.item;
+          dislikeCounter = dataToCheck.dislike;
+          likeCounter = dataToCheck.like;
+        } else if (dataToCheck === null || dataToCheck === undefined) {
+          console.log("Doin That");
+          data = res.data;
+        }
+        this.setLocalStorage(res.data, likeCounter, dislikeCounter, false);
+        console.log(data, dataToCheck);
 
         let language_id = data.spoken_languages.map(element => {
           return " " + lang[element.iso_639_1].nativeName + ",";
@@ -173,7 +175,6 @@ console.log(data,dataToCheck.item)
         });
         let show = data.homepage ? "d-block" : "d-none";
         let show_tag = data.tagline ? "d-block" : "d-none";
-
 
         classForLike = "far like-button fa-thumbs-up";
         classForDisLike = "far like-button fa-thumbs-down";
@@ -225,6 +226,7 @@ console.log(data,dataToCheck.item)
                   </span>
                 </span>
 
+                <br />
                 <br />
                 <Stars total={data.vote_average} />
                 <br className={show} />
@@ -288,7 +290,7 @@ console.log(data,dataToCheck.item)
                 </div>
                 <center>
                   <h3>The Cast</h3>
-                  <Cast data={data.credits}/>
+                  <Cast data={data.credits} />
                 </center>
               </div>
             </div>
@@ -313,8 +315,6 @@ console.log(data,dataToCheck.item)
           // Something happened in setting up the request that triggered an Error
           console.log("Error", error.message);
         }
-
-
       });
   }
   render() {
@@ -327,13 +327,10 @@ console.log(data,dataToCheck.item)
   }
   componentDidMount() {
     this.getMovieData(this.props.data);
-
   }
 
   componentWillReceiveProps(props) {
     this.getMovieData(props.data);
-
-
   }
 }
 
