@@ -27,7 +27,7 @@ export default class Cards extends Component {
   createPages(number) {
     this.setState({ ele: [], items: [], nextCounter: 10 });
     this.state.data===null?this.setState({classNameToPass:"d-none"}):   this.setState({classNameToPass:"d-block"})
-    number===1?this.setState({classNameToPass:"d-none"}):   this.setState({classNameToPass:"d-block"})
+    number===1||number===2?this.setState({classNameToPass:"d-none"}):   this.setState({classNameToPass:"d-block"})
 
 
     for (let i = 1; i < number; i++) {
@@ -59,7 +59,7 @@ export default class Cards extends Component {
   }
   createList(data) {
     this.setState({ items: [], data: null });
-    //Add Content To The List Emtied it in the upper line
+    //Add Content To The List Emptied it in the upper line
     data.map((ele, ind) => {
       let image = ele.poster_path
         ? "http://image.tmdb.org/t/p/w185_and_h278_bestv2//" + ele.poster_path

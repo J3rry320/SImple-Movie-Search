@@ -9,9 +9,20 @@ export default class Navbar extends Component{
         }
 
     }
-    buttonClick(){
-        this.props.callback(this.state.term,1);
-        this.setState({term:""})
+    buttonClick(e){
+        if(e!==undefined){
+            if(e.key=="Enter"){
+                this.props.callback(this.state.term,1);
+                this.setState({term:""})
+            }
+        }
+       else{
+
+            this.props.callback(this.state.term,1);
+            this.setState({term:""})
+
+       }
+
     }
     render(){
         return(
@@ -26,7 +37,7 @@ export default class Navbar extends Component{
 
 <div className="search-box-wrap wrap mt-3">
    <div className="search">
-      <input value={this.state.term} onChange={e=>this.setState({term:e.target.value})}  type="text" className="searchTerm" placeholder="Type Movie Name"/>
+      <input onKeyPress={e=>{this.buttonClick(e)}} value={this.state.term} onChange={e=>this.setState({term:e.target.value})}  type="text" className="searchTerm" placeholder="Type Movie Name"/>
       <button onClick={e=>this.buttonClick()} type="button" className="searchButton">
         <i className="fas fa-search"></i>
      </button>
