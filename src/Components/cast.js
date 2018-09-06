@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 const Cast = props => {
   let ele = [];
+  console.log(props.data)
   if (props.data === null) {
     console.log("Null");
   } else {

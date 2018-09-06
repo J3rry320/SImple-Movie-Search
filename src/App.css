@@ -1,135 +1,181 @@
-@import url('https://fonts.googleapis.com/css?family=Cookie|Rock+Salt|Nanum+Gothic+Coding');
+@import url('https://fonts.googleapis.com/css?family=Cookie|Rock+Salt|Nanum+Gothic+Coding|Open+Sans');
 @import url("https://use.fontawesome.com/releases/v5.3.1/css/all.css");
 @import url("https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.1.0/css/flag-icon.min.css");
-.wrapper{
-  display: grid;
-  grid-template-columns: repeat(12,1fr);
 
+body {
+  background: #f2f2f2;
+  font-family: 'Open Sans', sans-serif;
 }
-.padding-left{
-  padding-right:10px;
+
+nav {
+  list-style-type: none;
+  overflow: hidden;
+  background-color: #333;
 }
-.pt-2{
-  padding-top:10px;
+
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
 }
+
+.padding-left {
+  padding-right: 10px;
+}
+
+.pt-2 {
+  padding-top: 10px;
+}
+
 .left-span {
   display: inline-block;
+}
 
-}
-.list{
+.list {
   grid-column: span 5;
+  list-style-type: none;
+  margin-left:-10%
 }
-.content{
+
+.serach-box-wrap {
+  grid-column: span 3
+}
+
+.content {
   grid-column: span 7;
 }
-.image{
-  grid-column: span 6;
 
+.image {
+  grid-column: span 6;
 }
-.bg-div{
+
+.nav-brand {
+  color: #fff;
+  font-family: 'Rock Salt', cursive;
+  grid-column: span 9
+}
+
+.bg-div {
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
   color: #fff
 }
-.movie-header{
-font-size:28px;
-letter-spacing: 3px;
-font-weight:bold;
-text-transform: uppercase;
-font-family: 'Rock Salt', cursive;
 
+.movie-header {
+  font-size: 28px;
+  letter-spacing: 3px;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: 'Rock Salt', cursive;
 }
-.left-col{
+
+.left-col {
   grid-column: span 6;
-  padding-right:5px;
-  border-right:3px #fff solid
+  padding-right: 5px;
+  border-right: 3px #fff solid
 }
-.img-fluid-cast{
-  width:auto;
+
+.img-fluid-cast {
+  width: auto;
   height: 200px;
 }
-.img-fluid-poster{
-  width:auto;
+
+.img-fluid-poster {
+  width: auto;
   height: 187px;
 }
-.fantasy{
-  text-align:center;
+
+.fantasy {
+  text-align: center;
   font-family: 'Nanum Gothic Coding', monospace;
   font-size: 21px
 }
-.like-button{
+
+.like-button {
   cursor: pointer;
 }
-.danger{
+
+.danger {
   align-self: center;
-  background:lightsalmon;
-  color:#000;
-  padding:5%;
-  text-align:center;
+  background: #ffa07a;
+  color: #000;
+  padding: 5%;
+  text-align: center;
   text-transform: uppercase;
   font-weight: bolder;
-
-
 }
-.right-col{
-  padding-left:20px;
+
+.right-col {
+  padding-left: 20px;
   grid-column: span 6;
 }
-.movie-tag{
-  font-family: 'Cookie',cursive;
+
+.movie-tag {
+  font-family: 'Cookie', cursive;
   font-size: 32px;
 }
 
-.lead{
-  font-size:24px;
+.lead {
+  font-size: 24px;
   text-transform: capitalize;
-  text-align:justify;
+  text-align: justify;
   line-height: 35px;
-
-
-/*  font-family: 'Cookie', cursive;*/
-
+  /*  font-family: 'Cookie', cursive;*/
   font-family: 'Nanum Gothic Coding', monospace;
+}
 
+.text-desc {
+  font-size: 24px
 }
-.text-desc{
-  font-size:24px
-}
-.d-block{
+
+.d-block {
   display: block;
-
 }
-.d-none{
+
+.d-none {
   display: none;
 }
-.details{
-  color:#fff;
+
+.details {
+  color: #fff;
   background-color: rgba(0, 0, 0, 0.6);
-  padding: 0 25px 0 25px ;
+  padding: 0 25px 0 25px;
 }
 
-.list-content{
+.list-content {
   grid-column: span 6;
-
 }
 
-.float-right{
-  float:right;
+.float-right {
+  float: right;
 }
-.list-style{
+.padding-list{
+  padding:14px 0 14px 0
+}
+.underline-movie-name{
+  text-decoration: underline;
+  color:#666;
+}
+.list-style {
   list-style-type: none;
+  border: 1px solid #333;
 
+}
 
-  border-bottom: 1px solid #333;
-  border-right:1px solid #333;
+.float-left {
+  float: left;
 }
-.float-left{
-  float:left;
-}
+
 .pagination {
   display: inline-block;
   grid-column: span 12
+}
+.heading-container{
+  margin-top:-3.5%;
+  padding:10%
+}
+.bg-black{
+  background-color: #000;
 }
 .pagination a {
   color: black;
@@ -137,14 +183,61 @@ font-family: 'Rock Salt', cursive;
   padding: 8px 16px;
   text-decoration: none;
 }
+
+.search {
+  width: 100%;
+  position: relative
+}
+
+.searchTerm {
+  float: left;
+  width: 100%;
+  border: 3px solid #fff;
+  padding: 5px;
+  height: 30px;
+  border-radius: 5px;
+  outline: none;
+  color: #9DBFAF;
+  font-size: 18px
+}
+
+.mt-3 {
+  margin-top: 20px;
+}
+
+.searchTerm:focus {
+  color: #00B4CC;
+}
+
+.searchButton {
+  position: absolute;
+  right: -50px;
+  width: 40px;
+  height: 46px;
+  border: 1px solid #fff;
+  background: #fff;
+  text-align: center;
+  color: #000;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.wrap {
+  width: 240%;
+}
+
 .pagination a:hover {
   background-color: #666
 }
+
 .pagination a:visited {
   background-color: #666
 }
-.btn-info{
-  background-color: #4CAF50; /* Green */
+
+.btn-info {
+  background-color: #4CAF50;
+  /* Green */
   border: none;
   color: white;
   margin-top: 10px;
@@ -154,31 +247,37 @@ font-family: 'Rock Salt', cursive;
   display: inline-block;
   font-size: 16px;
   cursor: pointer;
-
 }
 
 @media only screen and (max-width: 768px) {
-  /* For mobile phones: */
-  [class*="col-"] {
-      width: 100%;
+  .list {
+    grid-column: span 12;
+  }
+  .wrap {
+    width: 400%;
+  }
+  .serach-box-wrap {
+    grid-column: span 12
+  }
+
+  .content {
+    grid-column: span 12;
+  }
+
+  .image {
+    grid-column: span 3;
+  }
+
+  .list-content {
+    grid-column: span 12;
+  }
+  .nav-brand {
+
+    grid-column: span 6
   }
 }
-.white-text{
-  color:#fff;
+
+.white-text {
+  color: #fff;
   text-decoration: none;
-
 }
-nav {
-  list-style-type: none;
-  margin:"20px";
-  padding: 10px;
-
-  overflow: hidden;
-  background-color: #333;
-}
-.input-in-nav{
-  width: 140%;
-  margin-right: -10%;
-  height:30px;
-}
-

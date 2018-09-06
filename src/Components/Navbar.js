@@ -9,23 +9,29 @@ export default class Navbar extends Component{
         }
 
     }
+    buttonClick(){
+        this.props.callback(this.state.term,1);
+        this.setState({term:""})
+    }
     render(){
         return(
-            <nav>
+            <nav className="wrapper">
 
-<div style={{float:"left"}}>
-<h2>The Movie DB</h2>
+
+<div className="nav-brand">
+<h3>The Movie DB</h3>
 </div>
-<div style={{float:"right"}}>
-
-                <input onChange={e=>this.setState({term:e.target.value})} placeholder="Enter The Name of the movie" type="text" className="input-in-nav" />
-
-          <button onClick={e=>this.props.callback(this.state.term,1)} className="btn btn-info">Search</button>
-
-                </div>
 
 
 
+<div className="search-box-wrap wrap mt-3">
+   <div className="search">
+      <input value={this.state.term} onChange={e=>this.setState({term:e.target.value})}  type="text" className="searchTerm" placeholder="Type Movie Name"/>
+      <button onClick={e=>this.buttonClick()} type="button" className="searchButton">
+        <i className="fas fa-search"></i>
+     </button>
+   </div>
+</div>
 
             </nav>
         )

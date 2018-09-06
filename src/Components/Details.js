@@ -7,13 +7,15 @@ import Cast from "./cast";
 import { uniqBy, remove } from "lodash";
 let likeCounter, dislikeCounter, classForDisLike, classForLike;
 
+
 let arrayOfItem = [];
 class Detail extends Component {
   constructor(data) {
     super(data);
     this.state = {
       itemToRender: null,
-      error: null
+      error: null,
+      suggestion:[],
     };
     this.getMovieData = this.getMovieData.bind(this);
   }
@@ -137,16 +139,18 @@ class Detail extends Component {
           dataToCheck != undefined &&
           dataToCheck.item.title === res.data.title
         ) {
-          console.log("Doin THis");
+
           data = dataToCheck.item;
           dislikeCounter = dataToCheck.dislike;
           likeCounter = dataToCheck.like;
         } else if (dataToCheck === null || dataToCheck === undefined) {
-          console.log("Doin That");
+
           data = res.data;
         }
         this.setLocalStorage(res.data, likeCounter, dislikeCounter, false);
-        console.log(data, dataToCheck);
+      data.genres.map(ele=>{
+          this.setState(prev=>({suggestion:[...prev.suggestion,ele.id]}))
+      })
 
         let language_id = data.spoken_languages.map(element => {
           return " " + lang[element.iso_639_1].nativeName + ",";
@@ -162,7 +166,7 @@ class Detail extends Component {
             <span
               data-id={element.iso_3166_1}
               onClick={e => {
-                console.log(e.currentTarget.dataset.id);
+                console.log(e.currentTarget.dataset.id);  //Feature Left Will Be Adding in a moment
               }}
               className="left-span "
             >
